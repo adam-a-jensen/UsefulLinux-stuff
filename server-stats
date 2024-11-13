@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# Total CPU usage
+echo "Total CPU usage:"
+top -b -n1 | grep "Cpu(s)" | awk '{print $2 + $4}' 
+echo ""
+
+# Total memory usage
+echo "Total memory usage:"
+free -m | awk 'NR==2{printf "Memory Usage: %s/%sMB (%.2f%%)\n", $3,$2,$3*100/$2 }'
+echo ""
+
+# Total disk usage
+echo "Total disk usage:"
+df -h | awk '$NF=="/"{printf "Disk Usage: %d/%dGB (%s)\n", $3,$2,$5}'
+echo ""
+
+# Top 5 processes by CPU usage
+echo "Top 5 processes by CPU usage:"
+ps -eo %cpu,%mem,comm --sort=-%cpu | head -n 6
+echo ""
+
+# Top 5 processes by memory usage
+echo "Top 5 processes by memory usage:"
+ps -eo %cpu,%mem,comm --sort=-%mem | head -n 6
+echo ""
